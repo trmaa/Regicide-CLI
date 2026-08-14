@@ -90,12 +90,19 @@ loop()
 
 			display_info();
 			render();
+
+			int len = l_size(hand);
+			if (len < 1) {
+				end = true;
+				return;
+			}
 		}
 	}
-
 	int len = l_size(hand);
-	if (len < 1)
+	if (len < 1) {
 		end = true;
+		return;
+	}
 }
 
 main(void)
