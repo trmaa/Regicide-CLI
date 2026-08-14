@@ -103,7 +103,7 @@ main(void)
 	cleanup();
 
 	if (state == WON)
-		printf(" Won\n");
+		printf(" \x1b[32mWon\x1b[0m\n");
 	else if (state == LOST)
-		printf(" Lost\n");
+		printf(" \x1b[31mLost\x1b[0m\n");
 }
