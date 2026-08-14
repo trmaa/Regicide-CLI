@@ -9,11 +9,6 @@ struct px *deck_dp;
 struct px *hp_dp;
 struct px *dp_dp;
 
-#define UICMIX(c) ((struct col){ \
-	(char)(((unsigned)(unsigned char)(c).r + (UIC >> 16)) / 2), \
-	(char)(((unsigned)(unsigned char)(c).g + ((UIC >> 8) & 0xff)) / 2), \
-	(char)(((unsigned)(unsigned char)(c).b + (UIC & 0xff)) / 2) })
-
 static void
 draw_outline(int t, int b, int l, int r)
 {
@@ -46,7 +41,7 @@ draw_str(char *str, int x, int y)
 	int len = strlen(str);
 	for (int i = 0; i < len; i++) {
 		scr[y][x + i].c = str[i];
-		scr[y][x + i].col = COL(UIC);
+		scr[y][x + i].col = UICMIX(scr[y][x].col);
 	}
 }
 
@@ -70,11 +65,13 @@ void ui_init()
 
 	draw_outline(t, b, l, r);
 
+	draw_str("BOSS:", l, t-1);
+
 	// STATS
 	l -= 2;
 	b += 1;
 
-	draw_str("DECK: EE", 2, 2);
+	draw_str("DECK: EE/40", 2, 2);
 	draw_str("HP: EE, DP: EE", l, b);
 
 	deck_dp = &scr[2][8];
@@ -82,6 +79,10 @@ void ui_init()
 	dp_dp = &scr[b][l + 12];
 
 	// HAND
+	l = W/2 - ((HAND_SIZE+1)/2)*(w+2)/2;
+	t = H - H/10 - 2*(h+2) + 1;
+	draw_str("HAND:", l, t-1);
+
 	for (int s = 0; s < 2; s++) {
 		t = H - H/10 - (2-s)*(h+2) + 1;
 		b = t + h;

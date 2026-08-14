@@ -1,0 +1,28 @@
+You can use any 32x32 png image as a background by naming it bg.png and running
+mkbg.sh!!
+
+REGICIDE
+
+It's time to destroy the Zar dinasty.
+
+First the Js, then the Qs, and lastly the Ks.
+
+Js have 20 HP, and 10 DP.
+Qs have 30 HP, and 15 DP.
+Ks have 40 HP, and 20 DP.
+
+Each round you play a card from your hand.
+
+First, the hability is activated:
+	SPADES -> Reduce enemy damage.
+	DIAMONDS -> Return discarted cads to the deck.
+	CLUBS -> Doble damage this round.
+	HEARTS -> Draw cards from the deck into your hand.
+
+Then deal damage.
+
+Third, absorbe damage by discarding cards.
+
+Loop until all enemies are defeated.
+
+GOOD LUCK!

@@ -1,14 +1,18 @@
+#include <stdio.h>
 #include "io.h"
 #include "gfx.h"
 #include "game.h"
+#include "err.h"
 
 enum state {
 	WON,
-	LOST
+	LOST,
+	NONE
 };
 
-static bool end;
 static enum state state = LOST;
+
+bool end;
 
 static void
 start()
@@ -26,16 +30,57 @@ loop()
 	display_info();
 	render();
 
-	int id = select(); // user inp (pause)
-
-	switch (id) {
-	case 'q':
+	if (boss_id >= DUNGEON_SIZE) {
+		state = WON;
 		end = true;
-		break;
-	default:
-		if (id >= '0' && id <= '0' + HAND_SIZE - 1)
-			use(id - '0');
-		break;
+	}
+
+	int id;
+
+	id = prompt("Play");
+
+	if (id == 'q') {
+		end = true;
+		return;
+	}
+
+	if (id == 'h') {
+		end = true;
+		help();
+		state = NONE;
+		return;
+	}
+
+	use(id - '0');
+
+	display_info();
+	render();
+
+	if (dungeon[boss_id].hp <= 0) {
+		boss_id++;
+	} else {
+		for (int paid = 0; paid < dungeon[boss_id].dp;) {
+			id = prompt("Discard");
+			if (id == 'q') {
+				end = true;
+				return;
+			}
+			if (id == 'h') {
+				end = true;
+				help();
+				state = NONE;
+				return;
+			}
+			id -= '0';
+			if (id < 0 || id >= l_size(hand))
+				continue;
+			struct card c = l_at(hand, id)->top;
+			discard(id);
+			paid += c.val;
+
+			display_info();
+			render();
+		}
 	}
 
 	int len = l_size(hand);
@@ -55,11 +100,10 @@ main(void)
 	}
 #endif
 	term_deconf();
+	cleanup();
 
 	if (state == WON)
-		return 0;
+		printf(" Won\n");
 	else if (state == LOST)
-		return 69;
-	else
-		return -1;
+		printf(" Lost\n");
 }

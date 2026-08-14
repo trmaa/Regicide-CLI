@@ -1,10 +1,11 @@
 #include <stdlib.h>
+#include <time.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "ui.h"
 #include "game.h"
 
-static int boss_id = 0;
+int boss_id = 0;
 struct boss dungeon[DUNGEON_SIZE];
 
 list_t *deck;
@@ -31,13 +32,21 @@ void fill_deck()
 {
 	struct card aux[DECK_SIZE];
 
+	srand(time(NULL));
+
 	for (int s = 0; s < 4; s++)
 		for (int n = 0; n < 10; n++) {
 			int id = n + s * 10;
 			aux[id].val = n+1;
 			aux[id].suit = suits[s];
 		}
-// Shufle aux
+
+	for (int i = DECK_SIZE - 1; i > 0; i--) {
+		int j = rand() % (i + 1);
+		struct card tmp = aux[i];
+		aux[i] = aux[j];
+		aux[j] = tmp;
+	}
 
 	deck = list_init();
 
@@ -72,6 +81,22 @@ void fill(int n)
 
 		fill(--n);
 	}
+}
+
+void discard(int id)
+{
+	if (id < 0 || id >= l_size(hand))
+		return;
+
+	struct node *n = l_at(hand, id);
+	pile = l_push(pile, n->top);
+	if (n == hand)
+		hand = n->prev;
+	if (n->prev != NULL)
+		n->prev->next = n->next;
+	if (n->next != NULL)
+		n->next->prev = n->prev;
+	free(n);
 }
 
 void use(int id)
@@ -113,6 +138,8 @@ void use(int id)
 
 	boss->hp -= card.val;
 
+	if (boss->dp < 0)
+		boss->dp = 0;
 }
 
 void display_info()
@@ -135,12 +162,33 @@ void display_info()
 		card_dp[i][0].c = n->top.val % 10 + '0';
 		card_dp[i][1].c = n->top.suit;
 
+		switch (n->top.suit) {
+		case 'S':
+			card_dp[i][0].col = COL(0x77AAFF);
+			card_dp[i][1].col = COL(0x77AAFF);
+			break;
+		case 'D':
+			card_dp[i][0].col = COL(0xFFAA77);
+			card_dp[i][1].col = COL(0xFFAA77);
+			break;
+		case 'C':
+			card_dp[i][0].col = COL(0x77FFAA);
+			card_dp[i][1].col = COL(0x77FFAA);
+			break;
+		case 'H':
+			card_dp[i][0].col = COL(0xFF77AA);
+			card_dp[i][1].col = COL(0xFF77AA);
+			break;
+		}
+
 		i++;
 		n = n->prev;
 	}
 	for (; i < HAND_SIZE; i++) {
 		card_dp[i][0].c = 'X';
 		card_dp[i][1].c = 'X';
+		card_dp[i][0].col = COL(0x222222);
+		card_dp[i][1].col = COL(0x222222);
 	}
 }
 

@@ -22,7 +22,7 @@ void scr_init()
 	int fd = open("bg.ppm", O_RDONLY);
 	int img_w = W/2;
 
-	{
+	if (fd != -1) {
 		char _[13];
 		read(fd, _, 13); // header
 	}
@@ -33,7 +33,10 @@ void scr_init()
 		for (int x = 0; x < img_w; x++) {
 			px = &scr[y][x * 2];
 
-			read(fd, &px->col, 3);
+			if (fd != -1)
+				read(fd, &px->col, 3);
+			else
+				px->col = COL(0x002233);
 
 			px->c = '@';
 

@@ -1,16 +1,24 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int select()
+int prompt(char *str)
 {
-	char c;
+	printf("\x1b[0m %s: ", str);
+	fflush(stdout);
 
-	write(1, "\x1b[0m Card: ", 11);
+	char c;
 
 	do {
 		if (read(0, &c, 1) <= 0)
 			return -1;
 	} while (c == '\n' || c == '\r');
 
-	return c;
+	char r = c;
+
+	do {
+		if (read(0, &c, 1) <= 0)
+			break;
+	} while (c != '\n' && c != '\r');
+
+	return r;
 }

@@ -49,6 +49,9 @@ list_t *l_push(list_t *self, struct card val)
 
 struct node *l_at(struct node *n, int id)
 {
+	if (n == NULL)
+		return NULL;
+
 	if (id == 0)
 		return n;
 
