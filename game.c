@@ -156,6 +156,25 @@ void display_info()
 	dp_dp[0].c = boss->dp / 10 + '0';
 	dp_dp[1].c = boss->dp % 10 + '0';
 
+	switch (boss->suit) {
+	case 'S':
+		boss_dp[0].col = COL(0x77AAFF);
+		boss_dp[1].col = COL(0x77AAFF);
+		break;
+	case 'D':
+		boss_dp[0].col = COL(0xFFAA77);
+		boss_dp[1].col = COL(0xFFAA77);
+		break;
+	case 'C':
+		boss_dp[0].col = COL(0x77FFAA);
+		boss_dp[1].col = COL(0x77FFAA);
+		break;
+	case 'H':
+		boss_dp[0].col = COL(0xFF77AA);
+		boss_dp[1].col = COL(0xFF77AA);
+		break;
+	}
+
 	struct node *n = hand;
 	int i = 0;
 	while (n->prev != NULL) {
