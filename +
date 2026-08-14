@@ -103,7 +103,7 @@ void ui_init()
 			draw_outline(t, b, l, r);
 
 			scr[t+2][l+2].c = id + '0';
-			scr[t+2][l+2].col = UICMIX(scr[t+2][r+2].col);
+			scr[t+2][l+2].col = UICMIX(scr[t][r].col);
 		}
 	}
 }
