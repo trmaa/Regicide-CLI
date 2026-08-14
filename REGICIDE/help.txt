@@ -7,9 +7,9 @@ It's time to destroy the Zar dinasty.
 
 First the Js, then the Qs, and lastly the Ks.
 
-Js have 20 HP, and 10 DP.
-Qs have 30 HP, and 15 DP.
-Ks have 40 HP, and 20 DP.
+Js have 10 HP, and 05 DP.
+Qs have 20 HP, and 10 DP.
+Ks have 30 HP, and 15 DP.
 
 Each round you play a card from your hand.
 

@@ -17,14 +17,22 @@ static char faces[] = { 'J', 'Q', 'K' };
 
 void fill_dungeon()
 {
-
 	for (int l = 0; l < 3; l++)
 		for (int s = 0; s < 4; s++) {
 			int id = s + l * 4;
-			dungeon[id].hp = 20 + 10*l;
-			dungeon[id].dp = 10 + 5*l;
+			dungeon[id].hp = 10 + 10*l;
+			dungeon[id].dp = 5 + 5*l;
 			dungeon[id].val = faces[l];
 			dungeon[id].suit = suits[s];
+		}
+
+	srand(time(NULL));
+	for (int k = 0; k < 3; k++)
+		for (int i = 3; i > 0; i--) {
+			int j = rand() % (i + 1) + 4*k;
+			struct boss tmp = dungeon[i+4*k];
+			dungeon[i+4*k] = dungeon[j];
+			dungeon[j] = tmp;
 		}
 }
 
