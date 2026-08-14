@@ -1,3 +1,13 @@
+/*
+ * SEE THE ORIGINAL GAME AT: https://www.regicidegame.com/
+ *
+ * Regicide CLI
+ * The same game but in the tty.
+ *
+ * Copyright (c) 2026 Pablo Trik Marin
+ * License GPL
+ */
+
 #include <stdio.h>
 #include "io.h"
 #include "gfx.h"
