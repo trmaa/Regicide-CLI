@@ -12,10 +12,6 @@ struct boss {
 
 extern struct boss dungeon[DUNGEON_SIZE];
 
-struct card {
-	char val, suit;
-};
-
 extern list_t *deck;
 extern list_t *pile;
 extern list_t *hand;

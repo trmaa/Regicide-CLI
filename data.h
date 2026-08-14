@@ -14,6 +14,6 @@ list_t *list_init();
 void list_free(list_t *);
 
 void l_pop(list_t *);
-void l_push(list_t *, struct card top);
+list_t *l_push(list_t *, struct card top);
 int l_size(struct node *);
 struct node *l_at(struct node *, int id);

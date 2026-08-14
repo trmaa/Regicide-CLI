@@ -27,21 +27,24 @@ void l_pop(list_t *self)
 	if (self->prev == NULL)
 		return;
 
-	struct node *aux = self;
-	self->top = self->prev->top;
-	self->prev = self->prev->prev;
+	struct node *aux = self->prev;
+	self->top = aux->top;
+	self->prev = aux->prev;
 	self->next = NULL;
+	if (aux->prev != NULL)
+		aux->prev->next = self;
 	free(aux);
 }
 
-void l_push(list_t *self, struct card val)
+list_t *l_push(list_t *self, struct card val)
 {
 	struct node *next = malloc(sizeof (struct node));
 	self->next = next;
 	next->prev = self;
+	next->next = NULL;
 	next->top = val;
 
-	self = next;
+	return next;
 }
 
 struct node *l_at(struct node *n, int id)
@@ -58,7 +61,7 @@ size_aux(struct node *n, int *c)
 	if (n->prev == NULL)
 		return;
 
-	*c++;
+	(*c)++;
 	size_aux(n->prev, c);
 }
 

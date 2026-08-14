@@ -42,14 +42,7 @@ void fill_deck()
 	deck = list_init();
 
 	for (int i = 0; i < DECK_SIZE; i++)
-		l_push(deck, aux[i]);
-
-	struct node *n = deck;
-	while (n != NULL) {
-		char str[3] = { n->top.val+'0', n->top.suit, 0 };
-		debug(str);
-		n = n->prev;
-	}
+		deck = l_push(deck, aux[i]);
 
 	hand = list_init();
 	pile = list_init();
@@ -57,8 +50,8 @@ void fill_deck()
 
 void draw(int n)
 {
-	if (n > 0 && l_size(hand) < HAND_SIZE) {
-		l_push(hand, deck->top);
+	if (n > 0 && l_size(hand) < HAND_SIZE && l_size(deck) > 0) {
+		hand = l_push(hand, deck->top);
 		l_pop(deck);
 
 		draw(--n);
@@ -71,8 +64,10 @@ void fill(int n)
 		int size = l_size(pile);
 		if (size < n)
 			n = size;
+		if (n == 0)
+			return;
 
-		l_push(deck, pile->top);
+		deck = l_push(deck, pile->top);
 		l_pop(pile); // stack, not queue... TODO
 
 		fill(--n);
@@ -84,11 +79,19 @@ void use(int id)
 	struct boss *boss = &dungeon[boss_id];
 	struct card card;
 
+	if (id < 0 || id >= l_size(hand))
+		return;
+
 	struct node *n = l_at(hand, id);
 	card = n->top;
-	l_push(pile, n->top);
-	n->prev->next = n->next;
-	n->next->prev = n->prev;
+	pile = l_push(pile, n->top);
+
+	if (n == hand)
+		hand = n->prev;
+	if (n->prev != NULL)
+		n->prev->next = n->next;
+	if (n->next != NULL)
+		n->next->prev = n->prev;
 	free(n);
 
 	if (card.suit != boss->suit) {
@@ -128,12 +131,16 @@ void display_info()
 
 	struct node *n = hand;
 	int i = 0;
-	while (n != NULL) {
+	while (n->prev != NULL) {
 		card_dp[i][0].c = n->top.val % 10 + '0';
 		card_dp[i][1].c = n->top.suit;
 
 		i++;
 		n = n->prev;
+	}
+	for (; i < HAND_SIZE; i++) {
+		card_dp[i][0].c = 'X';
+		card_dp[i][1].c = 'X';
 	}
 }
 
