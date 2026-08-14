@@ -14,7 +14,6 @@ void help()
 	FILE *f = fopen("help.txt", "rb");
 
 	char buf[1024] = "";
-	int b = 0;
 	while (fgets(buf, 1024, f))
 		printf("%s", buf);
 

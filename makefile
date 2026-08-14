@@ -6,7 +6,7 @@ src_s = $(wildcard *.s)
 src = $(src_c) $(src_s)
 obj = $(addprefix obj/, $(src_c:.c=.o) $(src_s:.s=.o))
 
-ccflags = -Wno-implicit-int -Wno-implicit-function-declaration
+ccflags = -Wno-implicit-int -Wno-implicit-function-declaration -Wpedantic
 ldflags = -no-pie -lm
 
 all: $(out)
