@@ -3,6 +3,7 @@ out = $(out_dir)/regicide
 
 src_c = $(wildcard *.c)
 src_s = $(wildcard *.s)
+src = $(src_c) $(src_s)
 obj = $(addprefix obj/, $(src_c:.c=.o) $(src_s:.s=.o))
 
 ccflags = -Wno-implicit-int -Wno-implicit-function-declaration
@@ -21,6 +22,10 @@ obj/%.o: %.s | obj
 
 $(out_dir):
 	mkdir -p $(out_dir)
+
+debug: $(src) | $(out_dir)
+	cc *.c -o $(out_dir)/debug $(ccflags) $(ldflags) -DDEBUG
+	cd $(out_dir); ./debug
 
 obj:
 	mkdir -p obj

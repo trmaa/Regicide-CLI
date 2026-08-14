@@ -11,6 +11,5 @@ check() {
 }
 
 check magick
-check vim
 
 magick bg.png bg.ppm
