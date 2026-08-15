@@ -8,7 +8,7 @@ struct px scr[H][W];
 void term_conf()
 {
 	// Hide cursor
-	printf("\x1b[?25l");
+	//printf("\x1b[?25l");
 }
 
 void term_deconf()
