@@ -48,19 +48,21 @@ loop()
 
 	int id;
 
-	id = prompt("Play");
+	do {
+		id = prompt("Play");
 
-	if (id == 'q') {
-		end = true;
-		return;
-	}
+		if (id == 'q') {
+			end = true;
+			return;
+		}
 
-	if (id == 'h') {
-		end = true;
-		help();
-		state = NONE;
-		return;
-	}
+		if (id == 'h') {
+			end = true;
+			help();
+			state = NONE;
+			return;
+		}
+	} while (id-'0' < 0 || id-'0' >= d_size(hand));
 
 	use(id - '0');
 
