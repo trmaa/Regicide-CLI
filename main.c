@@ -82,23 +82,23 @@ loop()
 				return;
 			}
 			id -= '0';
-			if (id < 0 || id >= l_size(hand))
+			if (id < 0 || id >= d_size(hand))
 				continue;
-			struct card c = l_at(hand, id)->top;
+			struct card c = d_at(hand, id)->top;
 			discard(id);
 			paid += c.val;
 
 			display_info();
 			render();
 
-			int len = l_size(hand);
+			int len = d_size(hand);
 			if (len < 1) {
 				end = true;
 				return;
 			}
 		}
 	}
-	int len = l_size(hand);
+	int len = d_size(hand);
 	if (len < 1) {
 		end = true;
 		return;

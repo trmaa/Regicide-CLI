@@ -9,9 +9,9 @@
 int boss_id = 0;
 struct boss dungeon[DUNGEON_SIZE];
 
-list_t *deck;
-list_t *hand;
-list_t *pile;
+deck_t *deck;
+deck_t *hand;
+deck_t *pile;
 
 static char suits[] = { 'S', 'D', 'C', 'H' };
 static char faces[] = { 'J', 'Q', 'K' };
@@ -57,20 +57,20 @@ void fill_deck()
 		aux[j] = tmp;
 	}
 
-	deck = list_init();
+	deck = deck_init();
 
 	for (int i = 0; i < DECK_SIZE; i++)
-		deck = l_push(deck, aux[i]);
+		deck = d_push(deck, aux[i]);
 
-	hand = list_init();
-	pile = list_init();
+	hand = deck_init();
+	pile = deck_init();
 }
 
 void draw(int n)
 {
-	if (n > 0 && l_size(hand) < HAND_SIZE && l_size(deck) > 0) {
-		hand = l_push(hand, deck->top);
-		l_pop(deck);
+	if (n > 0 && d_size(hand) < HAND_SIZE && d_size(deck) > 0) {
+		hand = d_push(hand, deck->top);
+		d_pop(deck);
 
 		draw(--n);
 	}
@@ -79,14 +79,14 @@ void draw(int n)
 void fill(int n)
 {
 	if (n > 0) {
-		int size = l_size(pile);
+		int size = d_size(pile);
 		if (size < n)
 			n = size;
 		if (n == 0)
 			return;
 
-		deck = l_push(deck, pile->top);
-		l_pop(pile); // stack, not queue... TODO
+		deck = d_push(deck, pile->top);
+		d_pop(pile); // stack, not queue... TODO
 
 		fill(--n);
 	}
@@ -94,11 +94,11 @@ void fill(int n)
 
 void discard(int id)
 {
-	if (id < 0 || id >= l_size(hand))
+	if (id < 0 || id >= d_size(hand))
 		return;
 
-	struct node *n = l_at(hand, id);
-	pile = l_push(pile, n->top);
+	struct node *n = d_at(hand, id);
+	pile = d_push(pile, n->top);
 	if (n == hand)
 		hand = n->prev;
 	if (n->prev != NULL)
@@ -113,12 +113,12 @@ void use(int id)
 	struct boss *boss = &dungeon[boss_id];
 	struct card card;
 
-	if (id < 0 || id >= l_size(hand))
+	if (id < 0 || id >= d_size(hand))
 		return;
 
-	struct node *n = l_at(hand, id);
+	struct node *n = d_at(hand, id);
 	card = n->top;
-	pile = l_push(pile, n->top);
+	pile = d_push(pile, n->top);
 
 	if (n == hand)
 		hand = n->prev;
@@ -174,7 +174,7 @@ suit_col(char suit)
 
 void display_info()
 {
-	int deck_len = l_size(deck);
+	int deck_len = d_size(deck);
 	deck_dp[0].c = deck_len / 10 + '0';
 	deck_dp[1].c = deck_len % 10 + '0';
 
@@ -213,6 +213,6 @@ void display_info()
 
 void cleanup()
 {
-	list_free(deck);
-	list_free(hand);
+	deck_free(deck);
+	deck_free(hand);
 }

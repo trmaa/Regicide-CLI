@@ -1,6 +1,6 @@
 #pragma once
 
-#include "data.h"
+#include "deck.h"
 
 #define HAND_SIZE 8
 #define DECK_SIZE 40
@@ -13,9 +13,9 @@ struct boss {
 extern int boss_id;
 extern struct boss dungeon[DUNGEON_SIZE];
 
-extern list_t *deck;
-extern list_t *pile;
-extern list_t *hand;
+extern deck_t *deck;
+extern deck_t *pile;
+extern deck_t *hand;
 
 extern bool end;
 

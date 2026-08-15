@@ -1,9 +1,9 @@
 #include <stdlib.h>
-#include "data.h"
+#include "deck.h"
 
-list_t *list_init()
+deck_t *deck_init()
 {
-	list_t *o;
+	deck_t *o;
 
 	o = malloc(sizeof (struct node));
 	o->top = (struct card){ -1, -1 };
@@ -13,16 +13,16 @@ list_t *list_init()
 	return o;
 }
 
-void list_free(list_t *self)
+void deck_free(deck_t *self)
 {
 	while (self->prev != NULL)
-		l_pop(self);
+		d_pop(self);
 
 	free(self);
 	self = NULL;
 }
 
-void l_pop(list_t *self)
+void d_pop(deck_t *self)
 {
 	if (self->prev == NULL)
 		return;
@@ -36,7 +36,7 @@ void l_pop(list_t *self)
 	free(aux);
 }
 
-list_t *l_push(list_t *self, struct card val)
+deck_t *d_push(deck_t *self, struct card val)
 {
 	struct node *next = malloc(sizeof (struct node));
 	self->next = next;
@@ -47,7 +47,7 @@ list_t *l_push(list_t *self, struct card val)
 	return next;
 }
 
-struct node *l_at(struct node *n, int id)
+struct node *d_at(struct node *n, int id)
 {
 	if (n == NULL)
 		return NULL;
@@ -55,7 +55,7 @@ struct node *l_at(struct node *n, int id)
 	if (id == 0)
 		return n;
 
-	return l_at(n->prev, --id);
+	return d_at(n->prev, --id);
 }
 
 static void
@@ -68,7 +68,7 @@ size_aux(struct node *n, int *c)
 	size_aux(n->prev, c);
 }
 
-int l_size(struct node *n)
+int d_size(struct node *n)
 {
 	int count = 0;
 	size_aux(n, &count);
