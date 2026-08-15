@@ -84,6 +84,12 @@ loop()
 	display_info();
 	render();
 
+	int len = d_size(hand);
+	if (len < 1) {
+		end = true;
+		return;
+	}
+
 	if (dungeon[boss_id].hp <= 0) {
 		boss_id++;
 	} else {
@@ -107,11 +113,6 @@ loop()
 				return;
 			}
 		}
-	}
-	int len = d_size(hand);
-	if (len < 1) {
-		end = true;
-		return;
 	}
 }
 
