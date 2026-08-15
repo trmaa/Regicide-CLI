@@ -12,4 +12,10 @@ check() {
 
 check magick
 
-magick bg.png bg.ppm
+src=bg-red.png
+
+if (( $# > 0 )); then
+	src=bg-$1.png
+fi
+
+magick $src bg.ppm
