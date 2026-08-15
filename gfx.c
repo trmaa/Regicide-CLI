@@ -40,7 +40,7 @@ void scr_init()
 
 			px->c = '@';
 
-			*(px + 1) = *px;
+			px[1] = px[0];
 		}
 
 	close(fd);
