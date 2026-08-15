@@ -32,6 +32,7 @@ void highscore(void)
 {
 	struct player_score players[MAX_PLAYERS];
 	int found = 0;
+	int new_best = 0;
 	int count = 0;
 	FILE *f;
 	int i;
@@ -48,8 +49,10 @@ void highscore(void)
 	for (i = 0; i < count; i++) {
 		if (strcmp(players[i].name, namev) == 0) {
 			found = 1;
-			if (boss_id+1 > players[i].score)
+			if (boss_id+1 > players[i].score) {
 				players[i].score = boss_id+1;
+				new_best = 1;
+			}
 			break;
 		}
 	}
@@ -57,6 +60,7 @@ void highscore(void)
 	if (!found && count < MAX_PLAYERS && strlen(namev) > 0) {
 		strcpy(players[count].name, namev);
 		players[count].score = boss_id+1;
+		new_best = 1;
 		count++;
 	}
 
@@ -72,7 +76,7 @@ void highscore(void)
 
 	if (count > 0) {
 		if (strcmp(players[0].name, namev) == 0 &&
-		    players[0].score == boss_id+1 && !found)
+		    players[0].score == boss_id+1 && new_best)
 			printf("New record: %s %d\n", namev, boss_id+1);
 
 		printf("High score: %s %d\n",
