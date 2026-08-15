@@ -13,6 +13,7 @@
 #include "gfx.h"
 #include "game.h"
 #include "err.h"
+#include "highscore.h"
 
 enum state {
 	WON,
@@ -109,6 +110,7 @@ main(void)
 {
 	term_conf();
 
+	name();
 	start();
 
 #ifndef DEBUG
@@ -123,4 +125,6 @@ main(void)
 		printf(" \x1b[32mWon\x1b[0m\n");
 	else if (state == LOST)
 		printf(" \x1b[31mLost\x1b[0m\n");
+
+	highscore();
 }
