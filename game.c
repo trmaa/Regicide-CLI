@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include "ui.h"
 #include "game.h"
+#include "gfx.h"
 
 int boss_id = 0;
 struct boss dungeon[DUNGEON_SIZE];
@@ -150,6 +151,27 @@ void use(int id)
 		boss->dp = 0;
 }
 
+static struct col
+suit_col(char suit)
+{
+	struct col col;
+	switch (suit) {
+	case 'S':
+		col = COL(0x77AAFF);
+		break;
+	case 'D':
+		col = COL(0xFFAA77);
+		break;
+	case 'C':
+		col = COL(0x77FFAA);
+		break;
+	case 'H':
+		col = COL(0xFF77AA);
+		break;
+	}
+	return col;
+}
+
 void display_info()
 {
 	int deck_len = l_size(deck);
@@ -166,24 +188,8 @@ void display_info()
 	dp_dp[0].c = boss->dp / 10 + '0';
 	dp_dp[1].c = boss->dp % 10 + '0';
 
-	switch (boss->suit) {
-	case 'S':
-		boss_dp[0].col = COL(0x77AAFF);
-		boss_dp[1].col = COL(0x77AAFF);
-		break;
-	case 'D':
-		boss_dp[0].col = COL(0xFFAA77);
-		boss_dp[1].col = COL(0xFFAA77);
-		break;
-	case 'C':
-		boss_dp[0].col = COL(0x77FFAA);
-		boss_dp[1].col = COL(0x77FFAA);
-		break;
-	case 'H':
-		boss_dp[0].col = COL(0xFF77AA);
-		boss_dp[1].col = COL(0xFF77AA);
-		break;
-	}
+	boss_dp[0].col = suit_col(boss->suit);
+	boss_dp[1].col = suit_col(boss->suit);
 
 	struct node *n = hand;
 	int i = 0;
@@ -191,24 +197,8 @@ void display_info()
 		card_dp[i][0].c = n->top.val % 10 + '0';
 		card_dp[i][1].c = n->top.suit;
 
-		switch (n->top.suit) {
-		case 'S':
-			card_dp[i][0].col = COL(0x77AAFF);
-			card_dp[i][1].col = COL(0x77AAFF);
-			break;
-		case 'D':
-			card_dp[i][0].col = COL(0xFFAA77);
-			card_dp[i][1].col = COL(0xFFAA77);
-			break;
-		case 'C':
-			card_dp[i][0].col = COL(0x77FFAA);
-			card_dp[i][1].col = COL(0x77FFAA);
-			break;
-		case 'H':
-			card_dp[i][0].col = COL(0xFF77AA);
-			card_dp[i][1].col = COL(0xFF77AA);
-			break;
-		}
+		card_dp[i][0].col = suit_col(n->top.suit);
+		card_dp[i][1].col = suit_col(n->top.suit);
 
 		i++;
 		n = n->prev;
