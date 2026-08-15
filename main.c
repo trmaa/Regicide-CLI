@@ -25,6 +25,30 @@ static enum state state = LOST;
 
 bool end;
 
+static bool
+check_opts(int id)
+{
+	if (id == 'q') {
+		end = true;
+		return true;
+	}
+
+	if (id == 'h') {
+		end = true;
+		help();
+		state = NONE;
+		return true;
+	}
+
+	if (id == 'c') {
+		display_info();
+		render();
+		return false;
+	}
+
+	return false;
+}
+
 static void
 start()
 {
@@ -51,17 +75,8 @@ loop()
 	do {
 		id = prompt("Play");
 
-		if (id == 'q') {
-			end = true;
+		if (check_opts(id))
 			return;
-		}
-
-		if (id == 'h') {
-			end = true;
-			help();
-			state = NONE;
-			return;
-		}
 	} while (id-'0' < 0 || id-'0' >= d_size(hand));
 
 	use(id - '0');
@@ -74,16 +89,8 @@ loop()
 	} else {
 		for (int paid = 0; paid < dungeon[boss_id].dp;) {
 			id = prompt("Discard");
-			if (id == 'q') {
-				end = true;
+			if (check_opts(id))
 				return;
-			}
-			if (id == 'h') {
-				end = true;
-				help();
-				state = NONE;
-				return;
-			}
 			id -= '0';
 			if (id < 0 || id >= d_size(hand))
 				continue;
