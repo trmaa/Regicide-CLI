@@ -42,7 +42,6 @@ void highscore(void)
 		       fscanf(f, "%255s %d", players[count].name,
 			      &players[count].score) == 2)
 			count++;
-		
 		fclose(f);
 	}
 
@@ -68,7 +67,6 @@ void highscore(void)
 		for (i = 0; i < count; i++)
 			fprintf(f, "%s %d\n",
 				players[i].name, players[i].score);
-		
 		fclose(f);
 	}
 
