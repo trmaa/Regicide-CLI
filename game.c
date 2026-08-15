@@ -157,6 +157,8 @@ void display_info()
 	deck_dp[1].c = deck_len % 10 + '0';
 
 	struct boss *boss = &dungeon[boss_id];
+	bossid_dp[0].c = (1 + boss_id) / 10 + '0';
+	bossid_dp[1].c = (1 + boss_id) % 10 + '0';
 	boss_dp[0].c = boss->val;
 	boss_dp[1].c = boss->suit;
 	hp_dp[0].c = boss->hp / 10 + '0';

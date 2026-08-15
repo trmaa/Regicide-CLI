@@ -3,6 +3,7 @@
 #include "ui.h"
 
 struct px *boss_dp;
+struct px *bossid_dp;
 struct px *card_dp[HAND_SIZE];
 
 struct px *deck_dp;
@@ -65,7 +66,8 @@ void ui_init()
 
 	draw_outline(t, b, l, r);
 
-	draw_str("BOSS:", l, t-1);
+	bossid_dp = &scr[t-1][l+5];
+	draw_str("BOSS XX/12:", l, t-1);
 
 	// STATS
 	l -= 2;

@@ -11,6 +11,7 @@
 	(char)(((unsigned)(unsigned char)(c).b + (UIC & 0xff)) / 2) })
 
 extern struct px *boss_dp;
+extern struct px *bossid_dp;
 extern struct px *card_dp[HAND_SIZE];
 
 extern struct px *deck_dp;
